@@ -1,0 +1,7 @@
+---
+- hosts: all 
+  tasks:
+    - name: copy ssh key
+      #command: cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
+      command: cat /vagrant/id_rsa.pub
+
