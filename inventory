@@ -1,2 +1,5 @@
-[all]
+[staging]
 controller ansible_connection=local
+
+[production]
+10.0.2.17

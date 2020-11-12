@@ -1,27 +1,44 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "hashicorp/bionic64"
-  config.vm.network "forwarded_port", guest: 80, host: 8080
-  #config.ssh.keys_only = false
-  #config.ssh.private_key_path = "C:/Users/mariano.stiepcich/.ssh/id_rsa"
-#               config.vm.provision "shell",
-#                       inline: "cat /vagrant/inventory > /etc/ansible/hosts"
 
+  config.vm.define "production" do |production|
+            production.vm.box = "hashicorp/bionic64"
+            production.vm.network "private_network", ip: "192.168.75.17"
+            production.vm.hostname = "production.academy"
+            production.vm.network "forwarded_port", guest: 80, host: 8081
 
-  config.vm.provision "docker" do |d|
-              d.pull_images "httpd"
-              d.run "httpd",
-              args: "-d -p 80:80"
+                production.vm.provision "docker" do |d|
+                        d.pull_images "httpd"
+                        d.run "httpd",
+                        args: "-d -p 80:80"
+
+                            production.vm.provision "shell",
+                                inline: "cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys"
+                            end
+                end
+
+  config.vm.define "staging" do |staging|
+	  staging.vm.box = "hashicorp/bionic64"
+  	  staging.vm.network "private_network", ip: "192.168.75.15"
+	  staging.vm.hostname = "staging.academy"
+	  staging.vm.network "forwarded_port", guest: 80, host: 8080
+
+  		staging.vm.provision "docker" do |d|
+              		d.pull_images "httpd"
+              		d.run "httpd",
+              		args: "-d -p 80:80"
   		
-		config.vm.provision "ansible_local" do |ansible|
+				staging.vm.provision "ansible_local" do |ansible|
 
-			ansible.playbook = "playbook.yml"
-		    	ansible.limit = "all"
-			ansible.inventory_path = "/vagrant/inventory"
+					ansible.playbook = "playbook.yml"
+		    			ansible.limit = "all"
+					ansible.inventory_path = "/vagrant/inventory"
    	 
     	
-		config.vm.provision "shell",
-                       inline: "cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys"
+					staging.vm.provision "shell",
+                       				inline: "cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys"
 
-	end
-  end
+				    end
+				end
+		end
 end
+
