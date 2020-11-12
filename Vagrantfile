@@ -7,16 +7,21 @@ Vagrant.configure("2") do |config|
 #                       inline: "cat /vagrant/inventory > /etc/ansible/hosts"
 
 
-  config.vm.provision "ansible_local" do |ansible|
+  config.vm.provision "docker" do |d|
+              d.pull_images "httpd"
+              d.run "httpd",
+              args: "-d -p 80:80"
+  		
+		config.vm.provision "ansible_local" do |ansible|
 
-	ansible.playbook = "playbook.yml"
-    	ansible.limit = "all"
-	ansible.inventory_path = "/vagrant/inventory"
+			ansible.playbook = "playbook.yml"
+		    	ansible.limit = "all"
+			ansible.inventory_path = "/vagrant/inventory"
    	 
-  		config.vm.provision "docker" do |d|
-    			d.pull_images "httpd"
-			d.run "httpd",
-			args: "-d -p 80:80"
-    	end
+    	
+		config.vm.provision "shell",
+                       inline: "cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys"
+
+	end
   end
 end
