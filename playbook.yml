@@ -1,7 +1,22 @@
 ---
 - hosts: all 
   tasks:
-    - name: copy ssh key
+    - name: paso a root
       #command: cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
-      command: cat /vagrant/id_rsa.pub
+      #command: cp /vagrant/id_rsa /home/vagrant/.ssh/
+      command: sudo -i
 
+    - name: agregar host local
+      command: cp /vagrant/hosts /etc/ansible/hosts
+
+    - name: copio ansible.cfg
+      command: cp /vagrant/ansible.cfg /etc/ansible/
+
+    - name: copiar ppk
+      command: cp /vagrant/id_rsa /home/vagrant/.ssh/
+    
+    - name: cambio permisos de key
+      command: chmod 700 /home/vagrant/.ssh/id_rsa
+
+    - name: modificar ssh_config
+      command: cp /vagrant/ssh_config /etc/ssh/ 
