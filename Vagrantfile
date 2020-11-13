@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
                 production.vm.provision "docker" do |d|
                         d.pull_images "httpd"
                         d.run "httpd",
-                        args: "-d -p 80:80"
+                        args: "-d -p 80:80 -v /home/vagrant/htdocs:/usr/local/apache2/htdocs"
 
                             production.vm.provision "shell",
                                 inline: "cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys"
@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
   		staging.vm.provision "docker" do |d|
               		d.pull_images "httpd"
               		d.run "httpd",
-              		args: "-d -p 80:80"
+              		args: "-d -p 80:80 -v /home/vagrant/htdocs:/usr/local/apache2/htdocs"
   		
 				staging.vm.provision "ansible_local" do |ansible|
 

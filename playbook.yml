@@ -1,13 +1,9 @@
 ---
-- hosts: all 
+- hosts: staging 
   tasks:
-    - name: paso a root
-      #command: cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
-      #command: cp /vagrant/id_rsa /home/vagrant/.ssh/
-      command: sudo -i
 
     - name: agregar host local
-      command: cp /vagrant/hosts /etc/ansible/hosts
+      command: cp /vagrant/inventory /etc/ansible/hosts
 
     - name: copio ansible.cfg
       command: cp /vagrant/ansible.cfg /etc/ansible/
@@ -19,4 +15,19 @@
       command: chmod 700 /home/vagrant/.ssh/id_rsa
 
     - name: modificar ssh_config
-      command: cp /vagrant/ssh_config /etc/ssh/ 
+      command: cp /vagrant/ssh_config /etc/ssh/
+
+    - name: cambiar permisos key
+      command: chown vagrant:vagrant /home/vagrant/.ssh/id_rsa
+
+    - name: mover index
+      command: cp -r /vagrant/htdocs /home/vagrant/
+
+    - name: permisos htdocs
+      command: chown -R vagrant:vagrant /home/vagrant/htdocs
+
+    - name: modificar index
+      command: sed -i "s/replaceHostname/$HOSTNAME/g" /home/vagrant/htdocs/index.html 
+
+    - name: ejecutar otro playbook.
+      command: ansible-playbook -i /etc/ansible/hosts /vagrant/production.yml

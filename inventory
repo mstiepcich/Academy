@@ -1,5 +1,5 @@
 [staging]
-controller ansible_connection=local
+localhost ansible_connection=local ansible_become=true
 
 [production]
-10.0.2.17
+192.168.75.17 ansible_become=true 

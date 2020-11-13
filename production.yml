@@ -1,0 +1,12 @@
+---
+- hosts: production
+  tasks:
+
+    - name: mover index
+      command: cp -r /vagrant/htdocs /home/vagrant/
+
+    - name: permisos htdocs
+      command: chown -R vagrant:vagrant /home/vagrant/htdocs
+
+    - name: modificar index
+      command: sed -i 's/replaceHostname/'$HOSTNAME'/g' /home/vagrant/htdocs/index.html
