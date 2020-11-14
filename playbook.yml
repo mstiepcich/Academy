@@ -27,7 +27,8 @@
       command: chown -R vagrant:vagrant /home/vagrant/htdocs
 
     - name: modificar index
-      command: sed -i "s/replaceHostname/$HOSTNAME/g" /home/vagrant/htdocs/index.html 
+      command: sed -i "s/replaceHostname/Staging/g" /home/vagrant/htdocs/index.html 
 
     - name: ejecutar otro playbook.
       command: ansible-playbook -i /etc/ansible/hosts /vagrant/production.yml
+      become_user: vagrant

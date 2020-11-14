@@ -6,6 +6,9 @@ Vagrant.configure("2") do |config|
             production.vm.hostname = "production.academy"
             production.vm.network "forwarded_port", guest: 80, host: 8081
 
+            production.vm.provision "shell",
+              inline: "mkdir /home/vagrant/htdocs"
+
                 production.vm.provision "docker" do |d|
                         d.pull_images "httpd"
                         d.run "httpd",

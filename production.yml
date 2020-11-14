@@ -9,4 +9,4 @@
       command: chown -R vagrant:vagrant /home/vagrant/htdocs
 
     - name: modificar index
-      command: sed -i 's/replaceHostname/'$HOSTNAME'/g' /home/vagrant/htdocs/index.html
+      command: sed -i "s/replaceHostname/Production/g" /home/vagrant/htdocs/index.html
