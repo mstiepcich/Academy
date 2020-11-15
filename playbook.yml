@@ -29,6 +29,15 @@
     - name: modificar index
       command: sed -i "s/replaceHostname/Staging/g" /home/vagrant/htdocs/index.html 
 
+    - name: update cache 
+      apt: update_cache=yes
+        
+    - name: Instalar ruby y serverspec
+      command: apt-get install ruby-serverspec rake bundler -y
+
+    - name: ejecutar script de init serverspec
+      command: /vagrant/init-serverspec.sh
+
     - name: ejecutar otro playbook.
       command: ansible-playbook -i /etc/ansible/hosts /vagrant/production.yml
       become_user: vagrant

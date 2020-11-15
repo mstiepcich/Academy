@@ -10,3 +10,12 @@
 
     - name: modificar index
       command: sed -i "s/replaceHostname/Production/g" /home/vagrant/htdocs/index.html
+    
+    - name: update cache 
+      apt: update_cache=yes
+
+    - name: Instalar ruby y serverspec
+      command: apt-get install ruby-serverspec rake bundler -y
+
+    - name: Ejecutar script de init-serverspec
+      command: /vagrant/init-serverspec.sh
