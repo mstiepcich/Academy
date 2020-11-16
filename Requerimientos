@@ -1,0 +1,11 @@
+Se necesita tener instalado Vagrant y Virtualbox. Nada mas.
+
+Se crean ambas masquinas (staging y production), se copia la key publica en ambos se mapea el puerto 80 al 8080 en staging y al 8081 en production
+Se instala docker en ambas, se hace pull de la imagen de httpd y se levanta el contenedor con un volumen y el mapeo del puerto 80 al 80 del host
+Se instala ansible en Staging.
+Se copia el archivo de configuracion de ssh, de ansible, la ppk, el inventario de ansible, cambian permisos y varias cosas para usar ansible como modificar la pagina segundo prod o staging
+Se instala ruby, serverspec, rake y bundler
+Se copian las pruebas, se hace el serverspec-init con un script
+Se ejecutan las pruebas, en production falla la de ansible porque no esta instalado, la deje para que falle en uno y en otro no.
+
+Esta medio enmarañado, se puede hacer mas limpio pero opte por probar muchas cosas y se me paso mucho el tiempo asi que prefiero entregar ya que esta funcionando. Las pruebas se ven medio feo desde ansible, pero desde /home/vagrant/serverspec/ se pueden ejecutar en ambos servidores con "rake spec"

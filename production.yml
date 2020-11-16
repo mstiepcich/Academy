@@ -1,0 +1,30 @@
+---
+- hosts: production
+  tasks:
+
+    - name: mover index
+      command: cp -r /vagrant/htdocs /home/vagrant/
+
+    - name: permisos htdocs
+      command: chown -R vagrant:vagrant /home/vagrant/htdocs
+
+    - name: modificar index
+      command: sed -i "s/replaceHostname/Production/g" /home/vagrant/htdocs/index.html
+    
+    - name: update cache 
+      apt: update_cache=yes
+
+    - name: Instalar ruby y serverspec
+      command: apt-get install ruby-serverspec rake bundler -y
+
+    - name: Ejecutar script de init-serverspec
+      command: /vagrant/init-serverspec.sh
+
+        #- name: Copiar archivo de pruebas
+        #command: cp /vagrant/sample_spec.rb /home/vagrant/serverspec/spec/localhost/sample_spec.rb
+      become: yes
+      become_user: root
+
+    - name: Ejecutar las pruebas
+      command: rake /home/vagrant/serverspec/spec
+      become_user: vagrant
