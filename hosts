@@ -1,3 +1,0 @@
-localhost ansible_connection = local
-
-192.168.75.17
